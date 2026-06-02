@@ -1,0 +1,154 @@
+package com.lox;
+import java.util.List;
+
+abstract class Stmt{
+
+	interface Visitor<R> {
+		R visitBlockStmt(Block stmt);
+		R visitExpressionStmt(Expression stmt);
+		R visitClassStmt(Class stmt);
+		R visitIfStmt(If stmt);
+		R visitFunctionStmt(Function stmt);
+		R visitWhileStmt(While stmt);
+		R visitPrintStmt(Print stmt);
+		R visitReturnStmt(Return stmt);
+		R visitVarStmt(Var stmt);
+	}
+
+	static class Block extends Stmt {
+		public Block(List<Stmt> statements) {
+			this.statements = statements;
+		}
+
+		@Override
+		<R> R accept(Visitor<R> visitor) {
+			return visitor.visitBlockStmt(this);
+		}
+
+		final List<Stmt> statements;
+	}
+
+	static class Expression extends Stmt {
+		public Expression(Expr expression) {
+			this.expression = expression;
+		}
+
+		@Override
+		<R> R accept(Visitor<R> visitor) {
+			return visitor.visitExpressionStmt(this);
+		}
+
+		final Expr expression;
+	}
+
+	static class Class extends Stmt {
+		public Class(Token name, Expr.Variable superclass, List<Stmt.Function> methods) {
+			this.name = name;
+			this.superclass = superclass;
+			this.methods = methods;
+		}
+
+		@Override
+		<R> R accept(Visitor<R> visitor) {
+			return visitor.visitClassStmt(this);
+		}
+
+		final Token name;
+		final Expr.Variable superclass;
+		final List<Stmt.Function> methods;
+	}
+
+	static class If extends Stmt {
+		public If(Expr condition, Stmt thenBranch, Stmt elseBranch) {
+			this.condition = condition;
+			this.thenBranch = thenBranch;
+			this.elseBranch = elseBranch;
+		}
+
+		@Override
+		<R> R accept(Visitor<R> visitor) {
+			return visitor.visitIfStmt(this);
+		}
+
+		final Expr condition;
+		final Stmt thenBranch;
+		final Stmt elseBranch;
+	}
+
+	static class Function extends Stmt {
+		public Function(Token name, List<Token> params, List<Stmt> body) {
+			this.name = name;
+			this.params = params;
+			this.body = body;
+		}
+
+		@Override
+		<R> R accept(Visitor<R> visitor) {
+			return visitor.visitFunctionStmt(this);
+		}
+
+		final Token name;
+		final List<Token> params;
+		final List<Stmt> body;
+	}
+
+	static class While extends Stmt {
+		public While(Expr condition, Stmt body) {
+			this.condition = condition;
+			this.body = body;
+		}
+
+		@Override
+		<R> R accept(Visitor<R> visitor) {
+			return visitor.visitWhileStmt(this);
+		}
+
+		final Expr condition;
+		final Stmt body;
+	}
+
+	static class Print extends Stmt {
+		public Print(Expr expression) {
+			this.expression = expression;
+		}
+
+		@Override
+		<R> R accept(Visitor<R> visitor) {
+			return visitor.visitPrintStmt(this);
+		}
+
+		final Expr expression;
+	}
+
+	static class Return extends Stmt {
+		public Return(Token keyword, Expr value) {
+			this.keyword = keyword;
+			this.value = value;
+		}
+
+		@Override
+		<R> R accept(Visitor<R> visitor) {
+			return visitor.visitReturnStmt(this);
+		}
+
+		final Token keyword;
+		final Expr value;
+	}
+
+	static class Var extends Stmt {
+		public Var(Token name, Expr initializer) {
+			this.name = name;
+			this.initializer = initializer;
+		}
+
+		@Override
+		<R> R accept(Visitor<R> visitor) {
+			return visitor.visitVarStmt(this);
+		}
+
+		final Token name;
+		final Expr initializer;
+	}
+		abstract <R> R accept(Visitor<R> visitor);
+
+}
