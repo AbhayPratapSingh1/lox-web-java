@@ -1,6 +1,6 @@
 export const OutputBox = ({ output }) => {
   return (
-    <div className="w-1/2 h-screen overflow-scroll border border-red-500 border-l  p-2 text-sm pb-20">
+    <div className="w-1/2 h-screen overflow-scroll border-l  p-2 text-sm pb-20">
       {output.errors.length > 0
         ? <Errors errors={output.errors} />
         : <Logs logs={output.logs} />}

@@ -11,6 +11,7 @@ public class Result {
         this.errors = errors;
     }
 
+
     public ArrayList<String> getErrors() {
         return errors;
     }
@@ -19,11 +20,5 @@ public class Result {
         return logs;
     }
 
-    @Override
-    public String toString() {
-        return "Result{" +
-                "logs=" + logs +
-                ", errors=" + errors +
-                '}';
-    }
+
 }
